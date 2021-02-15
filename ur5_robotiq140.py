@@ -10,7 +10,7 @@ import math
 import matplotlib.pyplot as plt
 
 serverMode = p.GUI # GUI/DIRECT
-sisbotUrdfPath = "./urdf/ur5_robotiq_140.urdf"
+sisbotUrdfPath = "./urdf/ur3_robotiq_140.urdf"
 # connect to engine servers
 physicsClient = p.connect(serverMode)
 # add search path for loadURDFs
@@ -56,7 +56,10 @@ userParams = dict()
 userParams2 = dict()
 
 def move_to_pose(pose_list, current_pose_idx, rXYZ, wait_counter):
-    if pose_list[current_pose_idx][0] - rXYZ[0] < 0.01 and pose_list[current_pose_idx][1] - rXYZ[1] < 0.01 and pose_list[current_pose_idx][2] - rXYZ[2] < 0.01:
+    print(f'{current_pose_idx}, {len(pose_list)}')
+    if current_pose_idx  == len(pose_list) - 1:
+        pass
+    elif pose_list[current_pose_idx][0] - rXYZ[0] < 0.01 and pose_list[current_pose_idx][1] - rXYZ[1] < 0.01 and pose_list[current_pose_idx][2] - rXYZ[2] < 0.01:
         if wait_counter > 80:
             current_pose_idx += 1
             wait_counter = 0
@@ -95,9 +98,9 @@ try:
     gripper_opening_length_control = p.addUserDebugParameter("gripper_opening_length",0,0.085,0.085)
 
     # Joint space 
-    userParams[0] = p.addUserDebugParameter("shoulder_pan_joint", -3.14, 3.14, -1.57)
-    userParams[1] = p.addUserDebugParameter("shoulder_lift_joint", -3.14, 3.14, -1.57)
-    userParams[2] = p.addUserDebugParameter("elbow_joint", -3.14, 3.14, 1.57)
+    userParams[0] = p.addUserDebugParameter("shoulder_pan_joint", -3.14, 3.14, 0)
+    userParams[1] = p.addUserDebugParameter("shoulder_lift_joint", -3.14, 3.14, 0)
+    userParams[2] = p.addUserDebugParameter("elbow_joint", -3.14, 3.14, 0)
     userParams[3] = p.addUserDebugParameter("wrist_1_joint",-3.14, 3.14, -1.57)
     userParams[4] = p.addUserDebugParameter("wrist_2_joint", -3.14, 3.14, -1.57)
     userParams[5] = p.addUserDebugParameter("wrist_3_joint", -3.14, 3.14, 0)   
@@ -193,7 +196,7 @@ try:
         # step 1: wait for init pose
 
         # Go to pose
-        pose_list = [[0.1,-0.5,0.23,0.085],[0.1,-0.5,0.23,0.067], [0.3,-0.2,0.4,0.067], [0.5,0.2,0.4,0.067],[0.5,0.2,0.25,0.085], [0.5,0.2,0.5,0.085]]
+        pose_list = [[0.1,-0.5,0.23,0.085],[0.1,-0.5,0.23,0.067], [0.3,-0.2,0.3,0.067], [0.4,0.1,0.3,0.067],[0.4,0.1,0.25,0.085], [0.4,0.1,0.4,0.085]]
         x,y,z,gripper_opening_length, current_pose_idx, wait_counter = move_to_pose(pose_list, current_pose_idx, rXYZ, wait_counter)
         print(current_pose_idx)
 
