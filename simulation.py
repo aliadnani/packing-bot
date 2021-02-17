@@ -57,7 +57,7 @@ ABSE = lambda a, b: abs(a - b)
 
 try:
     flag = True
-    pose_list1 = [
+    pose_list = [
         [0.1, -0.5, 0.23, 0.085],
         [0.1, -0.5, 0.23, 0.067],
         [0.3, -0.2, 0.3, 0.067],
@@ -68,13 +68,22 @@ try:
     ]
 
     ur3 = Robot(
-        p, robotID, 0.1, -0.5, 0.23, 0, 1.57, -1.57, 0.085, pose_list=pose_list1
+        physics_client=p,
+        robot_id=robotID,
+        x_init=0.1,
+        y_init=-0.5,
+        z_init=0.23,
+        roll_init=0,
+        pitch_init=1.57,
+        yaw_init=-1.57,
+        gripper_opening_length_init=0.085,
+        pose_list=pose_list,
     )
     while 1:
         # apply IK for robot arm 1
         ur3.calculate_robot_pose()
-        ur3.movel()
         ur3.select_target_pose()
+        ur3.movel()
     p.disconnect()
 except KeyError:
     p.disconnect()
