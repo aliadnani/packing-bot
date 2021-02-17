@@ -195,6 +195,10 @@ try:
         rxyzw = p.getLinkState(robotID, eefID)[1] # real rpy
         rroll, rpitch, ryaw = p.getEulerFromQuaternion(rxyzw)
 
+        # move_to_pose() parses the pose list into the target xyz & gripper pose
+        # based on the current_pose_idx to make the robot move to poses in the list sequentially
+        # 
+        # prev_pose_completion_time is used to wait 0.5 seconds in between moving to the next pose
         x,y,z,gripper_opening_length, current_pose_idx, prev_pose_completion_time = move_to_pose(pose_list, current_pose_idx, rXYZ, prev_pose_completion_time)
         x2,y2,z2,gripper_opening_length2, current_pose_idx2, prev_pose_completion_time2 = move_to_pose(pose_list2, current_pose_idx2, rXYZ2, prev_pose_completion_time2)
         
