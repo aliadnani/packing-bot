@@ -1,16 +1,18 @@
-# Pybullet ur5 equipped with robotiq 140 gripper
-It is tested on Ubuntu 16.04 & python3
+# PyBullet UR3 Equipped with Robotiq 140 Gripper
 
-## prerequisite
+Largely based on https://github.com/Alchemist77/pybullet-ur5-equipped-with-robotiq-140
+
+## Prerequisite
 ```
 pip3 install pybullet
 ```
 
-## run
+## Run
 ```
-python3 ur5_robotiq140.py
+python3 simulation.py
 ```
 ###  References
+
 https://github.com/matafela/pybullet_grasp_annotator_robotiq_85
 
 https://github.com/zswang666/pybullet-playground

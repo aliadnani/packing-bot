@@ -46,15 +46,15 @@ def setup_sisbot(p, robotID):
         # check if there 
         if len(kwargs) is not 0:
             raise KeyError("No keys {} in controlGripper".format(", ".join(kwargs.keys())))
-    mimicParentName = "robotiq_140_joint_finger"
-    mimicChildren = {"robotiq_arg2f_base_to_robotiq_140_left_outer_knuckle":      1,
+    gripperParentName = "robotiq_140_joint_finger"
+    gripperChildren = {"robotiq_arg2f_base_to_robotiq_140_left_outer_knuckle":      1,
                      "robotiq_arg2f_base_to_robotiq_140_left_inner_knuckle":       1,
                      "robotiq_arg2f_base_to_robotiq_140_right_inner_knuckle": 1,
                      "robotiq_140_left_outer_finger_to_inner":    1,
                      "robotiq_140_right_outer_finger_to_inner":   1}
-    parent = joints[mimicParentName] 
-    children = AttrDict((j, joints[j]) for j in joints if j in mimicChildren.keys())
-    controlRobotiqC2 = functools.partial(controlGripper, robotID, parent, children, mimicChildren)
+    parent = joints[gripperParentName] 
+    children = AttrDict((j, joints[j]) for j in joints if j in gripperChildren.keys())
+    controlRobotiqC2 = functools.partial(controlGripper, robotID, parent, children, gripperChildren)
 
-    return joints, controlRobotiqC2, controlJoints, mimicParentName
+    return joints, controlRobotiqC2, controlJoints, gripperParentName
 
