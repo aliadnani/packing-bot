@@ -1,7 +1,7 @@
 import time
 import pybullet as p
 import pybullet_data
-import utils_ur5_robotiq
+import utils_ur_robotiq
 import math
 
 
@@ -49,7 +49,7 @@ class Robot:
             self.controlRobotiqC2,
             self.controlJoints,
             self.gripperParentName,
-        ) = utils_ur5_robotiq.setup_sisbot(self.p, self.robot_id)
+        ) = utils_ur_robotiq.setup_sisbot(self.p, self.robot_id)
         self.joint_damping = [0.1] * 12
 
         # Robot pose

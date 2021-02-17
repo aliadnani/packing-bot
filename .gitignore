@@ -1,1 +1,3 @@
 .vscode
+__pycache__/robot.cpython-38.pyc
+__pycache__/utils_ur_robotiq.cpython-38.pyc

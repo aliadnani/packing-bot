@@ -1,7 +1,7 @@
 import time
 import pybullet as p
 import pybullet_data
-import utils_ur5_robotiq
+import utils_ur_robotiq
 import math
 from robot import Robot
 
