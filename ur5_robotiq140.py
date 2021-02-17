@@ -69,16 +69,16 @@ userParams = dict()
 userParams2 = dict()
 
 
-def move_to_pose(pose_list, current_pose_idx, rXYZ, change_pose_flag):
+def move_to_pose(pose_list, current_pose_idx, rXYZ, prev_pose_completion_time):
     if current_pose_idx  == len(pose_list) - 1:
         pass
     elif pose_list[current_pose_idx][0] - rXYZ[0] < 0.01 and pose_list[current_pose_idx][1] - rXYZ[1] < 0.01 and pose_list[current_pose_idx][2] - rXYZ[2] < 0.01:
-        if change_pose_flag:
+        if prev_pose_completion_time == 0:
+            prev_pose_completion_time = time.time()
+        if time.time() - prev_pose_completion_time > 0.5:
             current_pose_idx += 1
-            time.sleep(0.5)
-            change_pose_flag = 0
-        change_pose_flag = 1
-    return pose_list[current_pose_idx][0], pose_list[current_pose_idx][1], pose_list[current_pose_idx][2], pose_list[current_pose_idx][3], current_pose_idx, change_pose_flag
+            prev_pose_completion_time = 0
+    return pose_list[current_pose_idx][0], pose_list[current_pose_idx][1], pose_list[current_pose_idx][2], pose_list[current_pose_idx][3], current_pose_idx, prev_pose_completion_time
 
 try:
     flag = True
@@ -104,7 +104,7 @@ try:
 
     control_cnt2 = 0;
     current_pose_idx2 = 0
-    change_pose_flag2 = 0
+    prev_pose_completion_time2 = 0
 
     # Robot Arm 1
     x = 0.1
@@ -124,7 +124,7 @@ try:
     userParams[5]  = -0    # wrist_3_joint
 
     control_cnt = 0;
-    change_pose_flag = 0
+    prev_pose_completion_time = 0
     current_pose_idx = 0
     gripper_opening_length = gripper_opening_length_control
     while(flag):
@@ -195,8 +195,8 @@ try:
         rxyzw = p.getLinkState(robotID, eefID)[1] # real rpy
         rroll, rpitch, ryaw = p.getEulerFromQuaternion(rxyzw)
 
-        x,y,z,gripper_opening_length, current_pose_idx, change_pose_flag = move_to_pose(pose_list, current_pose_idx, rXYZ, change_pose_flag)
-        x2,y2,z2,gripper_opening_length2, current_pose_idx2, change_pose_flag2 = move_to_pose(pose_list2, current_pose_idx2, rXYZ2, change_pose_flag2)
+        x,y,z,gripper_opening_length, current_pose_idx, prev_pose_completion_time = move_to_pose(pose_list, current_pose_idx, rXYZ, prev_pose_completion_time)
+        x2,y2,z2,gripper_opening_length2, current_pose_idx2, prev_pose_completion_time2 = move_to_pose(pose_list2, current_pose_idx2, rXYZ2, prev_pose_completion_time2)
         
     p.disconnect()
 except KeyError:
