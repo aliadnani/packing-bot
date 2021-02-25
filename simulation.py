@@ -20,6 +20,12 @@ ground_id = p.loadURDF("plane.urdf")
 
 # Set up environment
 
+standStartPos = [0,0,0]
+
+standStartOrientation = p.getQuaternionFromEuler([0, 0, 0])
+# standId = p.loadURDF(
+#     "./base_link.stl", standStartPos, standStartOrientation
+# )
 # Import ball
 ballStartPos = [0.1, -0.5, 0]
 ballStartOrientation = p.getQuaternionFromEuler([0, 0, 0])
@@ -38,33 +44,58 @@ p.changeDynamics(
 )
 
 # Import Robot 1
-robotStartPos = [0, 0, 0]
-robotStartOrn = p.getQuaternionFromEuler([0, 0, 0])
+robotStartPos = [-0.2, 0.04, 1.18]
+robotStartOrn = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,1.5708])
 robotID = p.loadURDF(
     ur3_urdf_path,
     robotStartPos,
     robotStartOrn,
     useFixedBase=True,
-    flags=p.URDF_USE_INERTIA_FROM_FILE,
+    flags=p.URDF_USE_INERTIA_FROM_FILE|p.URDF_USE_SELF_COLLISION,
 )
 eefID = 7  # end effector link
 
+# Import Robot 2
+robotStartPos2 = [0.2, 0.04, 1.18]
+robotStartOrn2 = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,-1.5708])
+robotID2 = p.loadURDF(
+    ur3_urdf_path,
+    robotStartPos2,
+    robotStartOrn2,
+    useFixedBase=True,
+    flags=p.URDF_USE_INERTIA_FROM_FILE|p.URDF_USE_SELF_COLLISION,
+)
+eefID2 = 7  # end effector link
+
 # Increase surface friction of robot to make gripping ball easier
 p.changeDynamics(robotID, 6, lateralFriction=20)
+p.changeDynamics(robotID2, 6, lateralFriction=20)
 
 # Start simulation
 ABSE = lambda a, b: abs(a - b)
-
+flag  = True
+[0,0,0]
 try:
-    flag = True
     pose_list = [
-        [0.1, -0.5, 0.23, 0.085],
-        [0.1, -0.5, 0.23, 0.067],
-        [0.3, -0.2, 0.3, 0.067],
-        [0.4, 0.1, 0.3, 0.067],
-        [0.4, 0.1, 0.25, 0.085],
-        [0.4, 0.1, 0.4, 0.085],
-        [0.4, 0.1, 0.4, 0.025],
+        [0.1, -0.5, 0.23,[0,0,0], 0.085],
+        [0.1, -0.5, 0.23,[0,1,0], 0.085],
+        [0.1, -0.5, 0.23,[1,0,0], 0.085]
+        # [0.1, -0.5, 0.23, 0.067],
+        # [0.3, -0.2, 0.3, 0.067],
+        # [0.4, 0.1, 0.3, 0.067],
+        # [0.4, 0.1, 0.25, 0.085],
+        # [0.4, 0.1, 0.4, 0.085],
+        # [0.4, 0.1, 0.4, 0.025],
+    ]
+
+    pose_list2 = [
+        [1.1, -0.5, 0.23, 0.085],
+        [1.1, -0.5, 0.23, 0.067],
+        [1.3, -0.2, 0.3, 0.067],
+        [1.4, 0.1, 0.3, 0.067],
+        [1.4, 0.1, 0.25, 0.085],
+        [1.4, 0.1, 0.4, 0.085],
+        [1.4, 0.1, 0.4, 0.025],
     ]
 
     ur3 = Robot(
@@ -72,18 +103,38 @@ try:
         robot_id=robotID,
         x_init=0.1,
         y_init=-0.5,
-        z_init=0.23,
+        z_init=0.4,
         roll_init=0,
         pitch_init=1.57,
         yaw_init=-1.57,
         gripper_opening_length_init=0.085,
         pose_list=pose_list,
+        pose_transition_time=1.5
+    )
+
+    ur3_2 = Robot(
+        physics_client=p,
+        robot_id=robotID2,
+        x_init=1.1,
+        y_init=-0.5,
+        z_init=0.23,
+        roll_init=0,
+        pitch_init=1.57,
+        yaw_init=-1.57,
+        gripper_opening_length_init=0.085,
+        pose_list=pose_list2,
     )
     while 1:
-        # apply IK for robot arm 1
         ur3.calculate_robot_pose()
+        # ur3_2.calculate_robot_pose()
+
+        # ur3_2.select_target_pose()
         ur3.select_target_pose()
+
         ur3.movel()
+        # ur3_2.movel()
+
+
     p.disconnect()
 except KeyError:
     p.disconnect()
