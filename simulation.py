@@ -44,7 +44,7 @@ p.changeDynamics(
 )
 
 # Import Robot 1
-robotStartPos = [-0.2, 0.04, 1.18]
+robotStartPos = [-0.2, 0.14, 0.18]
 robotStartOrn = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,1.5708])
 robotID = p.loadURDF(
     ur3_urdf_path,
@@ -56,7 +56,7 @@ robotID = p.loadURDF(
 eefID = 7  # end effector link
 
 # Import Robot 2
-robotStartPos2 = [0.2, 0.04, 1.18]
+robotStartPos2 = [0.2, 0.04, 0.18]
 robotStartOrn2 = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,-1.5708])
 robotID2 = p.loadURDF(
     ur3_urdf_path,
@@ -125,11 +125,11 @@ try:
         pose_list=pose_list2,
     )
     while 1:
-        ur3.calculate_robot_pose()
+        # ur3.calculate_robot_pose()
         # ur3_2.calculate_robot_pose()
 
         # ur3_2.select_target_pose()
-        ur3.select_target_pose()
+        # ur3.select_target_pose()
 
         ur3.movel()
         # ur3_2.movel()

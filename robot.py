@@ -64,6 +64,8 @@ class Robot:
 
     def movel(self):
         # Calculate IK
+        self.calculate_robot_pose()
+        self.select_target_pose()
         jointPose = self.p.calculateInverseKinematics(
             self.robot_id,
             self.eef_id,
