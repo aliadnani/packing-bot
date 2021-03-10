@@ -39,10 +39,19 @@ p.changeDynamics(
 
 # Import Robot 1
 robotStartPos = [0, 0, 0]
+robotStartPos2 = [1, 0, 0]
 robotStartOrn = p.getQuaternionFromEuler([0, 0, 0])
 robotID = p.loadURDF(
     ur3_urdf_path,
     robotStartPos,
+    robotStartOrn,
+    useFixedBase=True,
+    flags=p.URDF_USE_INERTIA_FROM_FILE,
+)
+
+robotID2= p.loadURDF(
+    ur3_urdf_path,
+    robotStartPos2,
     robotStartOrn,
     useFixedBase=True,
     flags=p.URDF_USE_INERTIA_FROM_FILE,
@@ -67,6 +76,16 @@ try:
         [0.4, 0.1, 0.4, 0.025],
     ]
 
+    pose_list_2 = [
+        [1.1, -0.5, 0.23, 0.085],
+        [1.1, -0.5, 0.23, 0.067],
+        [1.3, -0.2, 0.3, 0.067],
+        [1.4, 0.1, 0.3, 0.067],
+        [1.4, 0.1, 0.25, 0.085],
+        [1.4, 0.1, 0.4, 0.085],
+        [1.4, 0.1, 0.4, 0.025],
+    ]
+
     ur3 = Robot(
         physics_client=p,
         robot_id=robotID,
@@ -79,11 +98,28 @@ try:
         gripper_opening_length_init=0.085,
         pose_list=pose_list,
     )
+
+    ur3_2 = Robot(
+        physics_client=p,
+        robot_id=robotID2,
+        x_init=1.1,
+        y_init=-0.5,
+        z_init=0.23,
+        roll_init=0,
+        pitch_init=1.57,
+        yaw_init=-1.57,
+        gripper_opening_length_init=0.085,
+        pose_list=pose_list_2,
+    )
     while 1:
         # apply IK for robot arm 1
         ur3.calculate_robot_pose()
         ur3.select_target_pose()
         ur3.movel()
+
+        ur3_2.calculate_robot_pose()
+        ur3_2.select_target_pose()
+        ur3_2.movel()
     p.disconnect()
 except KeyError:
     p.disconnect()
