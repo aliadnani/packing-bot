@@ -18,16 +18,8 @@ p.setRealTimeSimulation(1)
 p.setGravity(0, 0, -10)
 ground_id = p.loadURDF("plane.urdf")
 
-# Set up environment
-
-standStartPos = [0,0,0]
-
-standStartOrientation = p.getQuaternionFromEuler([0, 0, 0])
-# standId = p.loadURDF(
-#     "./base_link.stl", standStartPos, standStartOrientation
-# )
 # Import ball
-ballStartPos = [0.1, -0.5, 0]
+ballStartPos = [0.1, -0.5, 0.4]
 ballStartOrientation = p.getQuaternionFromEuler([0, 0, 0])
 soccerBallId = p.loadURDF(
     "soccerball.urdf", ballStartPos, ballStartOrientation, globalScaling=0.12
@@ -43,8 +35,13 @@ p.changeDynamics(
     lateralFriction=200,
 )
 
+# Import table
+tableStartPos = [0.0, 0, 0.3]
+tableStartOrientation = p.getQuaternionFromEuler([0, 0, 0])
+tableId = p.loadURDF("./urdf/objects/table.urdf", tableStartPos, tableStartOrientation,useFixedBase = True, globalScaling=2)
+
 # Import Robot 1
-robotStartPos = [-0.2, 0.14, 0.18]
+robotStartPos = [-0.2, 0.14, 0.68]
 robotStartOrn = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,1.5708])
 robotID = p.loadURDF(
     ur3_urdf_path,
@@ -55,8 +52,10 @@ robotID = p.loadURDF(
 )
 eefID = 7  # end effector link
 
+
+
 # Import Robot 2
-robotStartPos2 = [0.2, 0.14, 0.18]
+robotStartPos2 = [0.2, 0.14, 0.68]
 robotStartOrn2 = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,-1.5708])
 robotID2 = p.loadURDF(
     ur3_urdf_path,
@@ -77,9 +76,9 @@ flag  = True
 [0,0,0]
 try:
     pose_list = [
-        [-0.1, -0.3, 0.23,[0,0,0], 0.085],
-        [-0.1, -0.3, 0.23,[0,1,0], 0.085],
-        [-0.1, -0.3, 0.23,[1,0,0], 0.085]
+        [-0.1, -0.3, 0.73,[0,0,0], 0.085],
+        [-0.1, -0.3, 0.73,[0,1,0], 0.085],
+        [-0.1, -0.3, 0.73,[1,0,0], 0.085]
         # [0.1, -0.5, 0.23, 0.067],
         # [0.3, -0.2, 0.3, 0.067],
         # [0.4, 0.1, 0.3, 0.067],
@@ -89,9 +88,9 @@ try:
     ]
 
     pose_list2 = [
-        [0.1, -0.3, 0.3,[0,1.57,1.57], 0.085],
-        [0.1, -0.2, 0.3,[0,1.57,1.57], 0.085],
-        [0.1, -0.3, 0.3,[0,1.57,1.57], 0.085]
+        [0.3, -0.3, 0.8,[0,1.57,1.57], 0.085],
+        [0.3, -0.2, 0.8,[0,1.57,1.57], 0.085],
+        [0.3, -0.3, 0.8,[0,1.57,1.57], 0.085]
     ]
 
     ur3 = Robot(
@@ -99,7 +98,7 @@ try:
         robot_id=robotID,
         x_init=0.1,
         y_init=-0.5,
-        z_init=0.4,
+        z_init=0.9,
         roll_init=0,
         pitch_init=1.57,
         yaw_init=-1.57,
@@ -113,7 +112,7 @@ try:
         robot_id=robotID2,
         x_init=0.5,
         y_init=-0.3,
-        z_init=0.43,
+        z_init=0.93,
         roll_init=0,
         pitch_init=1.57,
         yaw_init=-1.57,
@@ -128,7 +127,7 @@ try:
         # ur3_2.select_target_pose()
         # ur3.select_target_pose()
 
-        # ur3.movel()
+        ur3.movel()
         ur3_2.movel()
 
 
