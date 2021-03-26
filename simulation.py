@@ -56,7 +56,7 @@ robotID = p.loadURDF(
 eefID = 7  # end effector link
 
 # Import Robot 2
-robotStartPos2 = [0.2, 0.04, 0.18]
+robotStartPos2 = [0.2, 0.14, 0.18]
 robotStartOrn2 = p.getQuaternionFromEuler([-1.5708 ,3.1416 ,-1.5708])
 robotID2 = p.loadURDF(
     ur3_urdf_path,
@@ -77,9 +77,9 @@ flag  = True
 [0,0,0]
 try:
     pose_list = [
-        [0.1, -0.5, 0.23,[0,0,0], 0.085],
-        [0.1, -0.5, 0.23,[0,1,0], 0.085],
-        [0.1, -0.5, 0.23,[1,0,0], 0.085]
+        [-0.1, -0.3, 0.23,[0,0,0], 0.085],
+        [-0.1, -0.3, 0.23,[0,1,0], 0.085],
+        [-0.1, -0.3, 0.23,[1,0,0], 0.085]
         # [0.1, -0.5, 0.23, 0.067],
         # [0.3, -0.2, 0.3, 0.067],
         # [0.4, 0.1, 0.3, 0.067],
@@ -89,13 +89,9 @@ try:
     ]
 
     pose_list2 = [
-        [1.1, -0.5, 0.23, 0.085],
-        [1.1, -0.5, 0.23, 0.067],
-        [1.3, -0.2, 0.3, 0.067],
-        [1.4, 0.1, 0.3, 0.067],
-        [1.4, 0.1, 0.25, 0.085],
-        [1.4, 0.1, 0.4, 0.085],
-        [1.4, 0.1, 0.4, 0.025],
+        [0.1, -0.3, 0.3,[0,1.57,1.57], 0.085],
+        [0.1, -0.2, 0.3,[0,1.57,1.57], 0.085],
+        [0.1, -0.3, 0.3,[0,1.57,1.57], 0.085]
     ]
 
     ur3 = Robot(
@@ -115,14 +111,15 @@ try:
     ur3_2 = Robot(
         physics_client=p,
         robot_id=robotID2,
-        x_init=1.1,
-        y_init=-0.5,
-        z_init=0.23,
+        x_init=0.5,
+        y_init=-0.3,
+        z_init=0.43,
         roll_init=0,
         pitch_init=1.57,
         yaw_init=-1.57,
         gripper_opening_length_init=0.085,
         pose_list=pose_list2,
+        pose_transition_time=1.5
     )
     while 1:
         # ur3.calculate_robot_pose()
@@ -131,8 +128,8 @@ try:
         # ur3_2.select_target_pose()
         # ur3.select_target_pose()
 
-        ur3.movel()
-        # ur3_2.movel()
+        # ur3.movel()
+        ur3_2.movel()
 
 
     p.disconnect()

@@ -119,6 +119,7 @@ class Robot:
     def select_target_pose(self):
         # If last pose in pose_list is achieved then just remain there
         print(f'{self.target_orn=} {self.rxyzw=}')
+        print(f'{self.pose_list[self.current_pose]=}   {self.rXYZ=}')
         if self.current_pose == len(self.pose_list) - 1:
             return
 
@@ -127,9 +128,9 @@ class Robot:
         # TO-DO: implement orientation pose
         if (
             # Position
-            self.pose_list[self.current_pose][0] - self.rXYZ[0] < 0.01
-            and self.pose_list[self.current_pose][1] - self.rXYZ[1] < 0.01
-            and self.pose_list[self.current_pose][2] - self.rXYZ[2] < 0.01
+            self.pose_list[self.current_pose][0] - self.rXYZ[0] < 0.02
+            and self.pose_list[self.current_pose][1] - self.rXYZ[1] < 0.02
+            and self.pose_list[self.current_pose][2] - self.rXYZ[2] < 0.02
             # Orientation
             and self.rxyzw[0] - self.target_orn[0] < 0.05
             and self.rxyzw[1] - self.target_orn[1] < 0.05
